@@ -28,7 +28,7 @@ interface BaseWebhookEvent<TName extends WebhookEventName> {
   payload: WebhookEventMap[TName];
 }
 
-export interface Options<TTransformed = unknown> {
+export interface Options<TTransformed = never> {
   secret?: string;
   transform?: TransformMethod<TTransformed>;
   log?: Partial<Logger>;
@@ -62,9 +62,9 @@ export interface State extends Options<any> {
 export type WebhookError = Error & Partial<RequestError>;
 
 // todo: rename to "EmitterErrorEvent"
-export interface WebhookEventHandlerError<TTransformed = unknown>
+export interface WebhookEventHandlerError<TTransformed = never>
   extends AggregateError<WebhookError> {
-  event: TTransformed extends unknown
+  event: [TTransformed] extends [never]
     ? EmitterWebhookEvent
     : EmitterWebhookEvent & TTransformed;
 }

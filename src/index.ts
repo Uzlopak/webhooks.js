@@ -18,7 +18,7 @@ export { createNodeMiddleware } from "./middleware/node/index.js";
 export { emitterEventNames } from "./generated/webhook-names.js";
 
 // U holds the return value of `transform` function in Options
-class Webhooks<TTransformed = unknown> {
+class Webhooks<TTransformed = never> {
   public sign: (payload: string) => Promise<string>;
   public verify: (eventPayload: string, signature: string) => Promise<boolean>;
   public on: <E extends EmitterWebhookEventName>(
@@ -27,7 +27,7 @@ class Webhooks<TTransformed = unknown> {
   ) => void;
   public onAny: (
     callback: (
-      event: TTransformed extends unknown
+      event: [TTransformed] extends [never]
         ? EmitterWebhookEvent
         : EmitterWebhookEvent & TTransformed,
     ) => any,
